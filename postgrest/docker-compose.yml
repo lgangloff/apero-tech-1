@@ -1,0 +1,29 @@
+# Démo PostgREST : une base Postgres + le serveur PostgREST devant elle.
+#   docker compose up
+# L'API répond ensuite sur http://localhost:3000
+
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      # Exécuté au premier démarrage : rôles et schéma "api"
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Disponibles dans le conteneur pour la démo live (\i /demo/apero.sql)
+      - ./apero.sql:/demo/apero.sql
+      - ./bonus.sql:/demo/bonus.sql
+    ports:
+      - "5432:5432"
+
+  api:
+    image: postgrest/postgrest
+    environment:
+      PGRST_DB_URI: postgres://authenticator:mdp_demo@db:5432/postgres
+      PGRST_DB_SCHEMAS: api          # seul ce schéma est exposé
+      PGRST_DB_ANON_ROLE: anon       # rôle utilisé quand la requête n'a pas de jeton
+      PGRST_JWT_SECRET: un_secret_de_demo_d_au_moins_32_caracteres
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db

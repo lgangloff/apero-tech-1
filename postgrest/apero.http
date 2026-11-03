@@ -1,0 +1,56 @@
+# Démo PostgREST : requêtes à lancer depuis VS Code
+# avec l'extension REST Client (humao.rest-client) : "Send Request" au-dessus de chaque requête.
+#
+# Prérequis : docker compose up, puis apero.sql lancé dans psql.
+
+@host = http://localhost:3000
+
+# JWT { "role": "membre" } signé avec PGRST_JWT_SECRET (docker-compose.yml).
+# Pour le regénérer : ./token.sh
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibWVtYnJlIn0.4GIA80XJst0gaK2f7Fui9j2GfrwInbP84WpfSMVQhUc
+
+
+### 1. Lire toute la table : zéro ligne de backend
+GET {{host}}/apero
+
+
+### 2. Filtrer : les boissons à plus de 10 degrés
+GET {{host}}/apero
+    ?type=eq.boisson
+    &degre=gt.10
+
+
+### 3. Choisir les colonnes et trier
+GET {{host}}/apero
+    ?select=nom,degre
+    &order=degre.desc.nullslast
+
+
+### 4. Ajouter des olives sans jeton : 401, le rôle anon n'a que le droit de lire
+POST {{host}}/apero
+Content-Type: application/json
+
+{ "nom": "Olives", "type": "grignotage" }
+
+
+### 5. Même requête avec le jeton du rôle membre : 201, les olives arrivent
+POST {{host}}/apero
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{ "nom": "Olives", "type": "grignotage" }
+
+
+### 6. Un membre peut ajouter, mais pas supprimer : 403
+DELETE {{host}}/apero?nom=eq.Pastis
+Authorization: Bearer {{token}}
+
+
+### 7. Bonus (après bonus.sql) : la jointure "qui apporte quoi", déduite de la clé étrangère
+GET {{host}}/participant
+    ?select=prenom,apero(nom)
+
+
+### 8. Bonus : la description OpenAPI de toute l'API, générée automatiquement
+GET {{host}}/

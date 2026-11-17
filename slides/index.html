@@ -370,16 +370,14 @@ aside.notes { display: none; }
   <aside class="notes">Pointer le numéro de tranche surligné : il change toutes les 30 secondes, en même temps sur le téléphone et sur le serveur.</aside>
 </section>
 
-<section class="slide" aria-label="Les RFC">
-  <h2>Côté dev : deux RFC, un seul calcul</h2>
-  <div class="formula" style="margin-bottom: 36px">code = <span class="fn">tronque</span>(<span class="fn">HMAC-SHA1</span>(secret, <mark>compteur</mark>)) mod 10<sup>6</sup></div>
-  <table class="grid">
-    <tr><th></th><th>HOTP · RFC 4226</th><th>TOTP · RFC 6238</th></tr>
-    <tr><td>Le compteur, c'est</td><td>le nombre de codes déjà utilisés</td><td>le numéro de la tranche de 30&nbsp;s</td></tr>
-    <tr><td>Un code reste valable</td><td>jusqu'à ce qu'il serve</td><td>30 secondes</td></tr>
-  </table>
-  <p class="at-bottom lead" style="max-width: none">TOTP, c'est HOTP où <mark>l'heure sert de compteur</mark>.</p>
-  <aside class="notes">Pour les devs. Même calcul des deux côtés : seul change ce qu'on met comme compteur. HOTP sert surtout de base à TOTP ; les applis d'authentification font toutes du TOTP. Avec l'heure comme compteur, rien à synchroniser, et le code expire tout seul. Les autres peuvent retenir : « une moulinette cryptographique standard ». Annoncer le HMAC comme fil rouge vers les JWT : une empreinte qu'on ne peut produire qu'en connaissant le secret, on la recroisera dans la partie 2.</aside>
+<section class="slide" aria-label="La formule">
+  <h2>Côté dev : tout tient dans une formule</h2>
+  <div class="formula">code = <span class="fn">tronque</span>(<span class="fn">HMAC-SHA1</span>(secret, tranche)) mod 10<sup>6</sup></div>
+  <ul class="list">
+    <li><strong>TOTP</strong> (RFC 6238) : un HMAC-SHA1 du secret et du numéro de tranche de 30 secondes, ramené à 6 chiffres par une « troncature dynamique ».</li>
+    <li>Un HMAC, c'est une empreinte qu'on ne peut produire qu'en connaissant le secret. On le recroisera dans la partie 2.</li>
+  </ul>
+  <aside class="notes">Pour les devs. Les autres peuvent retenir : « une moulinette cryptographique standard ». Annoncer le HMAC comme fil rouge vers les JWT. Si on demande : TOTP réutilise le calcul de HOTP (RFC 4226), où le compteur est le nombre de codes déjà utilisés ; TOTP remplace ce compteur par l'heure.</aside>
 </section>
 
 <section class="slide" aria-label="Le QR code">

@@ -372,13 +372,15 @@ aside.notes { display: none; }
 
 <section class="slide" aria-label="Les RFC">
   <h2>Côté dev : deux RFC, un seul calcul</h2>
-  <div class="formula">code = <span class="fn">tronque</span>(<span class="fn">HMAC-SHA1</span>(secret, tranche)) mod 10<sup>6</sup></div>
-  <ul class="list">
-    <li><strong>HOTP</strong> (RFC 4226) : un HMAC-SHA1 du secret et d'un compteur, ramené à 6 chiffres par une « troncature dynamique ».</li>
-    <li><strong>TOTP</strong> (RFC 6238) : exactement le même calcul, où le compteur est le numéro de tranche de 30 secondes.</li>
-    <li>Un HMAC, c'est une empreinte qu'on ne peut produire qu'en connaissant le secret. On le recroisera dans la partie 2.</li>
-  </ul>
-  <aside class="notes">Pour les devs. Les autres peuvent retenir : « une moulinette cryptographique standard ». Annoncer le HMAC comme fil rouge vers les JWT.</aside>
+  <div class="formula" style="margin-bottom: 36px">code = <span class="fn">tronque</span>(<span class="fn">HMAC-SHA1</span>(secret, <mark>compteur</mark>)) mod 10<sup>6</sup></div>
+  <table class="grid">
+    <tr><th></th><th>HOTP · RFC 4226</th><th>TOTP · RFC 6238</th></tr>
+    <tr><td>Le compteur avance</td><td>à chaque appui sur le bouton</td><td>tout seul, toutes les 30&nbsp;s</td></tr>
+    <tr><td>Un code reste valable</td><td>jusqu'à ce qu'il serve</td><td>30 secondes</td></tr>
+    <tr><td>Ce qui peut se décaler</td><td>les compteurs</td><td>les horloges</td></tr>
+  </table>
+  <p class="at-bottom lead" style="max-width: none">TOTP, c'est HOTP où <mark>l'horloge appuie sur le bouton</mark> toutes les 30&nbsp;s.</p>
+  <aside class="notes">Pour les devs. Même calcul des deux côtés : seul change ce qu'on met comme compteur. HOTP vient des petits boîtiers à bouton ; les applis d'authentification font du TOTP. Ce qui se décale : en HOTP, chaque appui pour rien fait avancer le compteur du boîtier mais pas celui du serveur ; en TOTP, le serveur tolère une tranche avant ou après. Les autres peuvent retenir : « une moulinette cryptographique standard ». Annoncer le HMAC comme fil rouge vers les JWT : une empreinte qu'on ne peut produire qu'en connaissant le secret, on la recroisera dans la partie 2.</aside>
 </section>
 
 <section class="slide" aria-label="Le QR code">

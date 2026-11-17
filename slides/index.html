@@ -484,7 +484,7 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
   <ul class="list lead">
     <li>Le code à 6 chiffres est <strong>calculé</strong>, pas envoyé.</li>
     <li>Le QR code est la vraie clé : on ne le partage jamais.</li>
-    <li>L'appli bat le SMS, et la passkey bat l'appli.</li>
+    <li>Du moins sûr au plus sûr : le SMS, l'appli, puis la passkey.</li>
   </ul>
   <aside class="notes">5 minutes de questions. Si la salle est silencieuse : « Qui a déjà perdu son téléphone avec la 2FA dessus ? Comment vous avez fait ? »</aside>
 </section>

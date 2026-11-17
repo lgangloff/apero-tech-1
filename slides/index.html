@@ -161,7 +161,7 @@ table.grid td:first-child { font-weight: 700; width: 30%; }
 .statement .answer { font: 700 60px/1.1 var(--display); margin-top: 48px; }
 .statement .answer mark { padding: 0 .2em; }
 
-/* --- Deux montres et une recette --- */
+/* --- Deux montres et un secret --- */
 .twins { display: grid; grid-template-columns: 1fr 120px 1fr; align-items: center; margin-top: 8px; }
 .twins .ticket { padding: 28px 36px 26px; }
 .twins .otp { font-size: 140px; }
@@ -336,23 +336,23 @@ aside.notes { display: none; }
   <aside class="notes">Pour les non-techs : « ce que je possède » se prouve en montrant quelque chose que seul mon téléphone peut produire. C'est le code.</aside>
 </section>
 
-<section class="slide" aria-label="Deux montres et une recette">
-  <h2>Deux montres et une recette</h2>
-  <p class="shared"><strong>Une seule fois</strong>, à l'inscription : le QR code dépose la même recette secrète des deux côtés.</p>
+<section class="slide" aria-label="Deux montres et un secret">
+  <h2>Deux montres et un secret</h2>
+  <p class="shared"><strong>Une seule fois</strong>, à l'inscription : le QR code dépose le même secret des deux côtés.</p>
   <div class="twins">
     <div class="ticket">
       <div class="who">Téléphone</div>
       <div class="otp" data-totp></div>
-      <p class="small" style="margin:0">recette + heure qu'il est</p>
+      <p class="small" style="margin:0">secret + heure qu'il est</p>
     </div>
     <div class="eq" aria-hidden="true">=</div>
     <div class="ticket">
       <div class="who">Serveur</div>
       <div class="otp" data-totp></div>
-      <p class="small" style="margin:0">recette + heure qu'il est</p>
+      <p class="small" style="margin:0">secret + heure qu'il est</p>
     </div>
   </div>
-  <p class="at-bottom lead">Ensuite, ils ne se parlent plus. Même recette et même heure donnent le même code.</p>
+  <p class="at-bottom lead">Ensuite, ils ne se parlent plus. Même secret et même heure donnent le même code.</p>
   <aside class="notes">C'est LE message de la partie. Laisser les codes changer en direct devant la salle : ils basculent en même temps. Personne n'a rien envoyé.</aside>
 </section>
 
@@ -366,7 +366,7 @@ aside.notes { display: none; }
     <div class="label">Prochaine tranche dans</div>
     <div class="val" data-seconds-big></div>
   </div>
-  <p>Ce numéro de tranche, identique partout dans le monde au même instant, est l'ingrédient « heure » de la recette.</p>
+  <p>Ce numéro de tranche, identique partout dans le monde au même instant, est la partie « heure » du calcul.</p>
   <aside class="notes">Pointer le numéro de tranche surligné : il change toutes les 30 secondes, en même temps sur le téléphone et sur le serveur.</aside>
 </section>
 

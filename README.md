@@ -1,6 +1,6 @@
-# Apéro Tech #1 : OTP et PostgREST
+# Apero Tech #1 : OTP et PostgREST
 
-Slides et code des démos de l'Apéro Tech #1 : comment fonctionnent les codes de double authentification, puis comment PostgREST transforme une base Postgres en API REST.
+Slides et code des démos de l'Apero Tech #1 : comment fonctionnent les codes de double authentification, puis comment PostgREST transforme une base Postgres en API REST.
 
 | Dossier | Contenu |
 | --- | --- |

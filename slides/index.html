@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Apéro Tech #1</title>
+<title>Apero Tech #1</title>
 <!--
-  Slides de l'Apéro Tech #1 : les codes à usage unique (OTP), puis PostgREST.
+  Slides de l'Apero Tech #1, « Ce que l'IA génère sans vous le dire » :
+  les codes à usage unique (OTP), puis PostgREST.
   Fichier autonome : polices embarquées, aucune connexion requise.
 
   Navigation : flèches, espace, clic (moitié droite / gauche), balayage sur mobile.
@@ -239,6 +240,12 @@ table.status td:last-child { text-align: right; }
 .planb .ticket { margin-top: 24px; padding: 22px 30px 24px; }
 .planb .otp { font-size: 120px; }
 
+/* --- Grands chiffres et sources --- */
+.stat { font: 800 112px/.9 var(--display); }
+.stat small { font-size: 48px; }
+.panel .stat { margin-bottom: 14px; }
+.source { font-size: 21px; line-height: 1.3; color: var(--bottle-soft); }
+
 /* --- Habillage : numéro de slide et notes --- */
 .counter { position: absolute; right: 40px; bottom: 28px; font: 600 22px/1 var(--display); color: var(--bottle-soft); }
 .divider .counter { color: #8FA89C; }
@@ -265,16 +272,16 @@ aside.notes { display: none; }
 </style>
 </head>
 <body>
-<main class="deck" id="deck" aria-label="Apéro Tech #1">
+<main class="deck" id="deck" aria-label="Apero Tech #1">
 
 <!-- ============ OUVERTURE ============ -->
 
 <section class="slide title-slide" aria-label="Titre">
   <p class="series">Un sujet, un verre, des questions</p>
-  <h1>Apéro Tech #1</h1>
+  <h1>Apero Tech #1</h1>
   <div class="title-row">
     <div>
-      <p class="subtitle">Prouver qui on est avec un code à usage unique, puis ouvrir sa base sans écrire de backend.</p>
+      <p class="subtitle"><strong>Ce que l'IA génère sans vous le dire</strong> : la double authentification et l'API sans backend.</p>
       <p class="author">L. Gangloff</p>
     </div>
     <div class="ticket">
@@ -283,7 +290,7 @@ aside.notes { display: none; }
       <div class="countdown"><div class="bar"><i data-bar></i></div><span class="sec" data-seconds></span></div>
     </div>
   </div>
-  <aside class="notes">Accueil. Un Apéro Tech, c'est un sujet technique, un verre, et le droit de poser des questions bêtes. Un par mois, ouvert à tous. Ne pas expliquer le code de droite : on y revient plus tard.</aside>
+  <aside class="notes">Accueil. Un Apero Tech, c'est un sujet technique, un verre, et le droit de poser des questions bêtes. Un par mois, ouvert à tous. L'angle de la soirée : deux briques qu'une IA vous génère en cinq minutes, et ce qu'elle ne vous dit pas. Ne pas expliquer le code de droite : on y revient plus tard.</aside>
 </section>
 
 <section class="slide statement" aria-label="Question 1">
@@ -303,7 +310,8 @@ aside.notes { display: none; }
     <li class="lead"><strong>Comment prouver qui on est&nbsp;?</strong><br><span class="quiet">Les codes à usage unique, ou OTP.</span></li>
     <li class="lead"><strong>Comment ouvrir l'accès à ses données sans écrire de backend, et sans ouvrir la porte à tout le monde&nbsp;?</strong><br><span class="quiet">PostgREST.</span></li>
   </ol>
-  <aside class="notes">Le fil rouge : d'abord l'identité, ensuite les données. Les deux parties se rejoignent sur un même outil, le HMAC.</aside>
+  <p class="at-bottom lead">Deux briques qu'une IA vous génère en cinq minutes. <mark>Ce soir, on regarde ce qu'elle ne vous dit pas.</mark></p>
+  <aside class="notes">Le fil rouge : d'abord l'identité, ensuite les données. Les deux parties se rejoignent sur un même outil, le HMAC. Pour les stagiaires et les alternants : c'est exactement ce qu'un outil de vibe coding met sous leurs applis.</aside>
 </section>
 
 <!-- ============ PARTIE 1 : OTP ============ -->
@@ -399,7 +407,7 @@ aside.notes { display: none; }
 
 totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pre>
   <p class="small quiet" style="margin-top: 22px">Aucune dépendance : <code>javax.crypto.Mac</code> est dans le JDK. otp/Totp.java est un fichier Java 25 qui se lance avec <code>java Totp.java</code>, sans classe ni import.</p>
-  <aside class="notes">Lire le code de haut en bas : HMAC, on prend 4 octets à une position donnée par le dernier octet, on garde 6 chiffres. Le format de fichier compact de Java 25 est un clin d'œil au prochain Apéro Tech.</aside>
+  <aside class="notes">Lire le code de haut en bas : HMAC, on prend 4 octets à une position donnée par le dernier octet, on garde 6 chiffres. Le format de fichier compact de Java 25 est un clin d'œil à un futur Apero Tech sur Java.</aside>
 </section>
 
 <section class="slide" aria-label="Démo OTP">
@@ -436,6 +444,22 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
   <aside class="notes">Pour les devs. Question à poser : « Chez nous, on stocke comment ces secrets ? »</aside>
 </section>
 
+<section class="slide" aria-label="Le phishing en temps réel">
+  <h2>Le phishing qui relaie votre code</h2>
+  <div class="flow" style="margin-bottom: 44px">
+    <div class="box"><h3>Vous</h3><p>Tapez votre code sur une copie parfaite du site</p></div>
+    <div class="arrow"><svg viewBox="0 0 72 28" aria-hidden="true"><path d="M2 14H64M54 4L66 14L54 24" fill="none" stroke="#12392C" stroke-width="4"/></svg><span>code</span></div>
+    <div class="box main"><h3>Faux site</h3><p>Relaie tout au vrai site, en direct</p></div>
+    <div class="arrow"><svg viewBox="0 0 72 28" aria-hidden="true"><path d="M2 14H64M54 4L66 14L54 24" fill="none" stroke="#12392C" stroke-width="4"/></svg><span>&lt;&nbsp;30&nbsp;s</span></div>
+    <div class="box"><h3>Vrai site</h3><p>Accepte le code et ouvre la session… à l'attaquant</p></div>
+  </div>
+  <div class="cols">
+    <div class="panel"><div class="stat">62&nbsp;<small>%</small></div><p class="small" style="margin:0 0 10px"><strong>Industrialisé.</strong> La part du phishing bloqué par Microsoft due au kit Tycoon 2FA, à son pic.</p><p class="source" style="margin:0">Démantelé par Europol et Microsoft en mars 2026</p></div>
+    <div class="panel"><div class="stat">54&nbsp;<small>%</small></div><p class="small" style="margin:0 0 10px"><strong>Écrit par une IA.</strong> De clics sur des mails de phishing générés par IA : autant que des experts, contre 12&nbsp;% pour un mail générique.</p><p class="source" style="margin:0">Heiding, Schneier et al., 101 participants</p></div>
+  </div>
+  <aside class="notes">Pour tout le monde. Le code à 6 chiffres ne protège pas d'un faux site qui le relaie en direct : des kits le font clés en main, et l'IA écrit l'appât. Phrase à dire : « L'OTP arrête les mots de passe volés en masse, pas un faux site qui relaie votre code en direct. » Transition : c'est pour ça qu'on monte l'échelle.</aside>
+</section>
+
 <section class="slide" aria-label="Limites">
   <h2>Les doubles authentifications ne se valent pas</h2>
   <div class="ladder">
@@ -444,7 +468,7 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
     <div class="rung r3"><h3>Passkey</h3><p>Liée au nom de domaine du vrai site : un faux site n'obtient rien.</p></div>
   </div>
   <div class="ladder-axis"><span>Moins robuste</span><span>Plus robuste</span></div>
-  <aside class="notes">Pour tout le monde. Les passkeys : sujet d'un prochain Apéro Tech.</aside>
+  <aside class="notes">Pour tout le monde. Les passkeys : sujet d'un prochain Apero Tech.</aside>
 </section>
 
 <section class="slide" aria-label="À retenir, partie 1">
@@ -499,9 +523,9 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
   </div>
   <ul class="list">
     <li>Ce n'est pas une extension de Postgres : c'est un petit serveur autonome, placé devant la base.</li>
-    <li>C'est la brique d'API sur laquelle repose Supabase.</li>
+    <li>C'est la brique d'API de Supabase, le backend que des outils comme Lovable branchent sous les applis qu'ils génèrent.</li>
   </ul>
-  <aside class="notes">Corriger d'emblée l'idée reçue « extension ». Chaque table ou vue du schéma exposé devient une ressource, chaque fonction SQL un appel /rpc.</aside>
+  <aside class="notes">Corriger d'emblée l'idée reçue « extension ». Pour les stagiaires : ce qu'on démonte ce soir, c'est le backend de leurs applis générées par IA. Chaque table ou vue du schéma exposé devient une ressource, chaque fonction SQL un appel /rpc.</aside>
 </section>
 
 <section class="slide" aria-label="Une table devient une ressource">
@@ -588,6 +612,24 @@ grant select, insert on api.apero
   <aside class="notes">Rejouer la requête 5 avec le jeton : 201. Puis la 6 : même un membre ne peut pas supprimer le pastis. Bonus si le temps le permet : bonus.sql et la requête 7, la jointure déduite de la clé étrangère.</aside>
 </section>
 
+<section class="slide" aria-label="Quand l'IA oublie les droits">
+  <h2>Quand l'IA oublie les droits</h2>
+  <div class="cols wide-right">
+    <div>
+      <div class="stat">170 <small>applis</small></div>
+      <p style="margin-top: 18px">sur 1&nbsp;645 générées par Lovable, lisibles ou modifiables <strong>sans être connecté</strong>.</p>
+      <p class="small quiet" style="margin:0">E-mails, téléphones, paiements, clés d'API : 303 endpoints exposés.</p>
+    </div>
+    <ul class="list" style="margin-top: 10px">
+      <li>Le backend de ces applis : Supabase, donc PostgREST.</li>
+      <li>La clé <code>anon</code> est publique par conception : ce n'était pas elle, le problème.</li>
+      <li>Il manquait les règles de la slide précédente : les droits et la Row Level Security.</li>
+    </ul>
+  </div>
+  <p class="at-bottom lead" style="max-width: none">L'IA vous génère l'API en cinq minutes. <mark>Les droits, c'est encore vous.</mark></p>
+  <aside class="notes">Analyse de Matt Palmer (Replit), mars 2025, publiée comme CVE-2025-48757 le 29 mai 2025. Rejouer la requête 6 (le DELETE refusé, 403) et dire : « voilà la ligne qui manquait à 170 applis ».</aside>
+</section>
+
 <section class="slide" aria-label="Le débat">
   <h2>Faut-il mettre la logique dans la base&nbsp;?</h2>
   <table class="grid">
@@ -629,18 +671,21 @@ grant select, insert on api.apero
   <h2>La suite</h2>
   <div class="cols wide-left">
     <div>
-      <h3>Apéro Tech #2</h3>
-      <p>Java : ce qu'on gagne en passant à Java 25, en avant / après sur du vrai code.</p>
-      <h3 style="margin-top: 40px">Et plus tard</h3>
-      <p>Les passkeys. Et votre sujet&nbsp;: venez le présenter, même en 15 minutes.</p>
+      <h3>Apero Tech #2 : vous choisissez</h3>
+      <ul class="list" style="margin-top: 22px">
+        <li><strong>Software factory et IA</strong></li>
+        <li>Java 25, en avant / après sur du vrai code</li>
+        <li>Les passkeys</li>
+      </ul>
+      <p style="margin-top: 30px">Et votre sujet&nbsp;: venez le présenter, même en 15 minutes.</p>
     </div>
     <div class="ticket">
       <p class="caption">Le code des démos et ces slides</p>
-      <p style="font: 700 52px/1.1 var(--display); margin: 8px 0 0">github.com/<br>lgangloff/<br>aperotek-1</p>
+      <p style="font: 700 52px/1.1 var(--display); margin: 8px 0 0">github.com/<br>lgangloff/<br>apero-tech-1</p>
     </div>
   </div>
   <p class="at-bottom lead"><strong>Des questions&nbsp;?</strong></p>
-  <aside class="notes">Questions libres, verre à la main. Prévoir un canal pour les propositions de sujets.</aside>
+  <aside class="notes">Vote à main levée, une option après l'autre. En option : annoncer que les slides et le code de la soirée ont été préparés avec une IA, et qu'on montrera comment si « Software factory et IA » gagne. Puis questions libres, verre à la main. Prévoir un canal pour les propositions de sujets.</aside>
 </section>
 
 </main>

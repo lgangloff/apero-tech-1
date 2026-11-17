@@ -521,9 +521,9 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
 </section>
 
 <section class="slide" aria-label="PostgREST, c'est quoi">
-  <h2>Le schéma, c'est l'API</h2>
+  <h2>Une API REST déduite du schéma</h2>
   <div class="flow" style="margin-bottom: 56px">
-    <div class="box"><h3>Navigateur ou appli</h3><p>Pose une question dans une URL</p></div>
+    <div class="box"><h3>Le client</h3><p><code style="font-weight: 600">GET /apero?degre=gt.10</code><br>depuis un front, une appli ou un simple curl</p></div>
     <div class="arrow"><svg viewBox="0 0 72 28" aria-hidden="true"><path d="M2 14H64M54 4L66 14L54 24" fill="none" stroke="#12392C" stroke-width="4"/></svg><span>HTTP<br>JSON</span></div>
     <div class="box main"><h3>PostgREST</h3><p>Lit la structure de la base et en déduit l'API</p></div>
     <div class="arrow"><svg viewBox="0 0 72 28" aria-hidden="true"><path d="M2 14H64M54 4L66 14L54 24" fill="none" stroke="#12392C" stroke-width="4"/></svg><span>SQL</span></div>

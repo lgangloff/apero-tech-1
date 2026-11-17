@@ -650,13 +650,22 @@ grant select, insert on api.apero
   <aside class="notes">Lancer le débat, ne pas le trancher. Laisser les devs argumenter entre eux.</aside>
 </section>
 
-<section class="slide" aria-label="Et chez nous">
-  <h2>Pour quel projet, chez nous&nbsp;?</h2>
+<section class="slide" aria-label="Quand le choisir">
+  <h2>Quand le choisir, quand l'éviter</h2>
   <div class="cols">
-    <div class="panel"><h3>Bons candidats</h3><ul class="list" style="margin-top: 20px"><li>Back-office interne</li><li>API de données en lecture</li><li>Prototype</li></ul></div>
-    <div class="panel"><h3>Mauvais candidats</h3><ul class="list" style="margin-top: 20px"><li>Logique métier complexe</li><li>Orchestration entre plusieurs services</li></ul></div>
+    <div class="panel"><h3>Bon terrain</h3><ul class="list small" style="margin-top: 20px">
+      <li>Back-office et outils internes : du CRUD avec des droits fins</li>
+      <li>API de lecture sur des données qui existent déjà</li>
+      <li>Prototype ou MVP : le schéma d'abord, le front ensuite</li>
+    </ul></div>
+    <div class="panel"><h3>Mauvais terrain</h3><ul class="list small" style="margin-top: 20px">
+      <li>Règles métier riches, qui changent souvent</li>
+      <li>Orchestration de plusieurs services ou d'appels externes</li>
+      <li>Équipe peu à l'aise avec SQL et les droits Postgres</li>
+    </ul></div>
   </div>
-  <aside class="notes">Question pour les managers. Noter les idées qui sortent : elles peuvent devenir des sujets.</aside>
+  <p class="at-bottom lead" style="max-width: none">Le bon test : <mark>vos règles tiennent-elles en contraintes et droits SQL&nbsp;?</mark></p>
+  <aside class="notes">Question pour la salle, managers compris : « Quel projet que vous connaissez aurait coché la colonne de gauche ? » Noter les idées qui sortent : elles peuvent devenir des sujets.</aside>
 </section>
 
 <section class="slide" aria-label="À retenir, partie 2">

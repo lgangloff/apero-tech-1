@@ -17,23 +17,25 @@ Ouvrir `slides/index.html` dans un navigateur.
 - `#12` à la fin de l'URL ouvre directement la slide 12
 - L'impression en PDF sort une slide par page
 
-La slide de titre affiche un vrai code TOTP calculé dans la page. La slide de démo OTP sert de plan B : on y colle le secret généré par `Totp.java`, et elle affiche le même code que le téléphone.
+La slide de titre affiche un vrai code TOTP calculé dans la page. Dans la slide de démo OTP, on colle l'URI générée par `Totp.java` : elle affiche le QR code à scanner et le même code que le téléphone.
 
 ## Démo 1 : les codes à usage unique (OTP)
 
-Prérequis : Java 25 ou plus, et `qrencode` pour afficher le QR code dans le terminal (`brew install qrencode` ou `apt install qrencode`).
+Prérequis : Java 25 ou plus, rien d'autre. Ça marche sous Windows, macOS et Linux.
 
 ```bash
 cd otp
 
-# Crée un secret dans demo-secret.txt et affiche son QR code
-java Totp.java enroll | qrencode -t ansiutf8
+# Crée un secret dans demo-secret.txt et copie son URI otpauth://
+java Totp.java enroll | clip      # Windows ; sur macOS : | pbcopy
 
 # Affiche le code courant, mis à jour chaque seconde
 java Totp.java
 ```
 
-Scanner le QR code avec une appli d'authentification (Google Authenticator, Authy, etc.), passer le téléphone en mode avion : le terminal et le téléphone affichent le même code au même instant.
+Coller l'URI dans le champ de la slide de démo : elle affiche le QR code à scanner et le code courant. Le QR code est dessiné par la page elle-même, rien ne part sur le réseau. Scanner le QR avec une appli d'authentification (Google Authenticator, Authy, etc.), passer le téléphone en mode avion : le terminal, la slide et le téléphone affichent le même code au même instant.
+
+Sur macOS ou Linux, `java Totp.java enroll | qrencode -t ansiutf8` affiche aussi le QR code directement dans le terminal.
 
 `Totp.java` est un fichier source compact de Java 25 : pas de classe, pas d'import, et il se lance sans compilation préalable. Le calcul suit la RFC 6238 et a été vérifié avec ses vecteurs de test.
 
@@ -79,6 +81,6 @@ Pour rejouer la démo depuis le début : `docker compose down -v`, puis les deux
 
 Tout ce qui est ici est fait pour une démo : mots de passe et secrets en clair, à ne pas réutiliser ailleurs.
 
-## Polices
+## Polices et bibliothèque
 
-Les slides embarquent Big Shoulders Display, Atkinson Hyperlegible et IBM Plex Mono, toutes trois sous licence SIL Open Font License.
+Les slides embarquent Big Shoulders Display, Atkinson Hyperlegible et IBM Plex Mono, toutes trois sous licence SIL Open Font License. Le QR code de la démo est dessiné avec [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) de Kazuhiko Arase, sous licence MIT, embarqué dans la page.

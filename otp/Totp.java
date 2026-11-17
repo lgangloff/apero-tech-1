@@ -1,7 +1,8 @@
 // Démo TOTP (RFC 6238) en Java 25, sans aucune dépendance.
 //
-//   java Totp.java enroll | qrencode -t ansiutf8   -> crée un secret et affiche le QR code
-//   java Totp.java                                  -> affiche le code courant, en direct
+//   java Totp.java enroll | clip   -> crée un secret et copie son URI otpauth:// (macOS : | pbcopy),
+//                                     à coller dans la slide de démo, qui affiche le QR code
+//   java Totp.java                 -> affiche le code courant, en direct
 //
 // Fichier source "compact" (Java 25) : pas de classe, pas d'import,
 // java.base est importé automatiquement.

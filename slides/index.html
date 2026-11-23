@@ -461,9 +461,9 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
     <div class="arrow"><svg viewBox="0 0 72 28" aria-hidden="true"><path d="M2 14H64M54 4L66 14L54 24" fill="none" stroke="#12392C" stroke-width="4"/></svg><span>&lt;&nbsp;30&nbsp;s</span></div>
     <div class="box"><h3>Vrai site</h3><p>Accepte le code et ouvre la session… à l'attaquant</p></div>
   </div>
-  <div class="panel" style="display: flex; align-items: center; gap: 48px">
-    <div class="stat" style="margin: 0">62&nbsp;<small>%</small></div>
-    <div><p class="small" style="margin:0 0 10px"><strong>Industrialisé.</strong> La part du phishing bloqué par Microsoft due au kit Tycoon 2FA, à son pic.</p><p class="source" style="margin:0">Démantelé par Europol et Microsoft en mars 2026</p></div>
+  <div class="cols">
+    <div class="panel"><div class="stat">62&nbsp;<small>%</small></div><p class="small" style="margin:0 0 10px"><strong>Industrialisé.</strong> La part du phishing bloqué par Microsoft due au kit Tycoon 2FA, à son pic.</p><p class="source" style="margin:0">Démantelé par Europol et Microsoft en mars 2026</p></div>
+    <div class="panel"><div class="stat">30&nbsp;<small>s</small></div><p class="small" style="margin:0 0 10px"><strong>Largement assez.</strong> Le kit relaie le code tout de suite, puis garde le cookie de session.</p><p class="source" style="margin:0">Le code expire, la session reste ouverte</p></div>
   </div>
   <aside class="notes">Pour tout le monde. Le code à 6 chiffres ne protège pas d'un faux site qui le relaie en direct : des kits le font clés en main, et gardent ensuite la session. Phrase à dire : « L'OTP arrête les mots de passe volés en masse, pas un faux site qui relaie votre code en direct. » Transition : c'est pour ça qu'on monte l'échelle.</aside>
 </section>

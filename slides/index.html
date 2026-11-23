@@ -395,9 +395,9 @@ aside.notes { display: none; }
     <span class="indent">?secret=<mark>APEROTECHAPEROTECHAPEROTECHAPERO</mark></span>
     <span class="indent">&amp;issuer=Apero</span>
   </div>
-  <p class="lead" style="margin-top: 40px">C'est tout ce qui est échangé, une seule fois. <strong>Quelqu'un qui photographie ce QR code possède votre double authentification.</strong></p>
-  <p class="at-bottom small"><strong>Et avec une IA&nbsp;?</strong> Demandez-lui la 2FA sur un projet Supabase : elle passera par <code>supabase.auth.mfa.enroll()</code>, qui renvoie exactement ce genre d'URI.</p>
-  <aside class="notes">Le lien avec l'IA : Supabase, le backend des applis générées par des outils comme Lovable, propose la 2FA TOTP par défaut. L'IA génère la 2FA ; ce soir, on regarde ce qu'il y a dedans. Le secret est encodé en base32. Ce secret est justement celui qui calcule le code de la première slide. Rappeler qu'il ne faut jamais partager un QR d'enrôlement en capture d'écran.</aside>
+  <p class="lead" style="margin-top: 48px">C'est tout ce qui est échangé, une seule fois. Le secret est encodé en base32.</p>
+  <p class="lead"><strong>Quelqu'un qui photographie ce QR code possède votre double authentification.</strong></p>
+  <aside class="notes">Ce secret est justement celui qui calcule le code de la première slide. Rappeler qu'il ne faut jamais partager un QR d'enrôlement en capture d'écran.</aside>
 </section>
 
 <section class="slide" aria-label="Le code Java">

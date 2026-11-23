@@ -61,12 +61,16 @@ Ouvrir ensuite `apero.http` dans VS Code et lancer les requêtes une par une ave
 | 4 | Ajouter sans jeton | 401 |
 | 5 | Ajouter avec le jeton du rôle `membre` | 201 |
 | 6 | Supprimer avec ce même jeton | 403 |
-| 7 | La jointure déduite de la clé étrangère (après `bonus.sql`) | 200 |
-| 8 | La description OpenAPI générée | 200 |
+| 7 | Row Level Security : Alice ajoute du saucisson, signé à son nom (après `rls.sql`) | 201 |
+| 8 | Alice supprime le pastis de Bob : rien n'est supprimé | 200, liste vide |
+| 9 | Alice retire son saucisson | 200 |
+| 10 | Alice écrit au nom de Bob | 403 |
+| 11 | La jointure déduite de la clé étrangère (bonus, après `bonus.sql`) | 200 |
+| 12 | La description OpenAPI générée (bonus) | 200 |
 
-Pour la requête 7 : `docker compose exec db psql -U postgres -f /demo/bonus.sql`.
+Avant la requête 7 : `docker compose exec db psql -U postgres -f /demo/rls.sql`. Avant la requête 11 : `docker compose exec db psql -U postgres -f /demo/bonus.sql`.
 
-Le jeton du rôle `membre` est déjà dans `apero.http`. Si le secret change dans `docker-compose.yml`, `./token.sh` en fabrique un nouveau avec bash et openssl.
+Les jetons du rôle `membre`, d'Alice et de Bob sont déjà dans `apero.http`. Si le secret change dans `docker-compose.yml`, `./token.sh` en fabrique de nouveaux avec bash et openssl (`./token.sh membre alice` pour un membre identifié).
 
 Pour rejouer la démo depuis le début : `docker compose down -v`, puis les deux commandes ci-dessus.
 
@@ -75,9 +79,10 @@ Pour rejouer la démo depuis le début : `docker compose down -v`, puis les deux
 | `docker-compose.yml` | Postgres 17 et PostgREST, avec 4 lignes de configuration |
 | `init.sql` | Le schéma `api` et les rôles `anon`, `membre` et `authenticator` |
 | `apero.sql` | La table créée en direct, et ses `GRANT` |
+| `rls.sql` | La Row Level Security : chacun ne modifie que ses propres apports |
 | `bonus.sql` | Une deuxième table reliée par une clé étrangère |
 | `apero.http` | Les requêtes de la démo, pour REST Client |
-| `token.sh` | Fabrique le JWT signé en HMAC-SHA256 |
+| `token.sh` | Fabrique le JWT signé en HMAC-SHA256, avec ou sans claim `sub` |
 
 Tout ce qui est ici est fait pour une démo : mots de passe et secrets en clair, à ne pas réutiliser ailleurs.
 

@@ -9,6 +9,11 @@
 # Pour le regénérer : ./token.sh
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibWVtYnJlIn0.4GIA80XJst0gaK2f7Fui9j2GfrwInbP84WpfSMVQhUc
 
+# Deux membres identifiés par le claim "sub", pour la Row Level Security (requêtes 7 à 10).
+# Pour les regénérer : ./token.sh membre alice, ./token.sh membre bob
+@alice = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibWVtYnJlIiwic3ViIjoiYWxpY2UifQ.WX-tO5Wrk2bAfehBfskW__Uz7LDKzP4aIA7OpNjVH2c
+@bob = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibWVtYnJlIiwic3ViIjoiYm9iIn0.k7y_IMtHTbsZBe4nXXykDlehzTGT3BF_PTRfJmpcblM
+
 
 ### 1. Lire toute la table : zéro ligne de backend
 GET {{host}}/apero
@@ -47,10 +52,39 @@ DELETE {{host}}/apero?nom=eq.Pastis
 Authorization: Bearer {{token}}
 
 
-### 7. Bonus (après bonus.sql) : la jointure "qui apporte quoi", déduite de la clé étrangère
+### 7. Row Level Security (après rls.sql) : Alice apporte du saucisson, signé "alice" sans qu'elle l'écrive : 201
+POST {{host}}/apero
+Authorization: Bearer {{alice}}
+Content-Type: application/json
+Prefer: return=representation
+
+{ "nom": "Saucisson", "type": "grignotage" }
+
+
+### 8. Alice tente de supprimer le pastis de Bob : 200, mais liste vide, rien n'a été supprimé
+DELETE {{host}}/apero?nom=eq.Pastis
+Authorization: Bearer {{alice}}
+Prefer: return=representation
+
+
+### 9. Alice retire son saucisson : cette fois, la ligne part
+DELETE {{host}}/apero?nom=eq.Saucisson
+Authorization: Bearer {{alice}}
+Prefer: return=representation
+
+
+### 10. Alice écrit au nom de Bob : 403, refusé par WITH CHECK
+POST {{host}}/apero
+Authorization: Bearer {{alice}}
+Content-Type: application/json
+
+{ "nom": "Cacahuètes", "type": "grignotage", "apporte_par": "bob" }
+
+
+### 11. Bonus (après bonus.sql) : la jointure "qui apporte quoi", déduite de la clé étrangère
 GET {{host}}/participant
     ?select=prenom,apero(nom)
 
 
-### 8. Bonus : la description OpenAPI de toute l'API, générée automatiquement
+### 12. Bonus : la description OpenAPI de toute l'API, générée automatiquement
 GET {{host}}/

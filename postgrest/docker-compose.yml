@@ -12,6 +12,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       # Disponibles dans le conteneur pour la démo live (\i /demo/apero.sql)
       - ./apero.sql:/demo/apero.sql
+      - ./rls.sql:/demo/rls.sql
       - ./bonus.sql:/demo/bonus.sql
     ports:
       - "5432:5432"

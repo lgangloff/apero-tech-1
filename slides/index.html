@@ -617,7 +617,29 @@ grant select, insert on api.apero
     </table>
   </div>
   <p class="at-bottom">Requêtes 5 et 6 de <code>apero.http</code> : avec le jeton, les olives arrivent, mais le pastis reste.</p>
-  <aside class="notes">Rejouer la requête 5 avec le jeton : 201. Puis la 6 : même un membre ne peut pas supprimer le pastis. Bonus si le temps le permet : bonus.sql et la requête 7, la jointure déduite de la clé étrangère.</aside>
+  <aside class="notes">Rejouer la requête 5 avec le jeton : 201. Puis la 6 : même un membre ne peut pas supprimer le pastis. Puis la Row Level Security, slide suivante. Le bonus (bonus.sql et la requête 11, la jointure déduite de la clé étrangère) se saute si le temps manque.</aside>
+</section>
+
+<section class="slide" aria-label="Les droits, ligne par ligne">
+  <h2>Les droits, ligne par ligne</h2>
+  <p class="lead" style="margin: -20px 0 40px; max-width: none"><code>GRANT</code> : qui touche la table. Row Level Security : quelles lignes.</p>
+  <div class="cols wide-left">
+    <pre class="code" data-lang="sql">alter table api.apero
+  enable row level security;
+
+create policy mes_apports
+  on api.apero for all to membre
+  using (apporte_par = jwt_sub())
+  with check (apporte_par = jwt_sub());</pre>
+    <table class="status">
+      <tr><td>Alice ajoute son saucisson</td><td><span class="pill ok">201</span></td></tr>
+      <tr><td>Alice supprime le pastis de Bob</td><td><span class="pill ko">0 ligne</span></td></tr>
+      <tr><td>Alice retire son saucisson</td><td><span class="pill ok">1 ligne</span></td></tr>
+      <tr><td>Alice écrit au nom de Bob</td><td><span class="pill ko">403</span></td></tr>
+    </table>
+  </div>
+  <p class="at-bottom lead"><mark>Un WHERE que personne ne peut oublier.</mark></p>
+  <aside class="notes">Pour tout le monde : un classeur partagé, où chacun lit toutes les fiches mais ne peut raturer que les siennes. Lancer rls.sql, puis les requêtes 7 à 10 de apero.http. La requête 8 est le moment fort : pas d'erreur, la ligne n'existe tout simplement pas pour Alice. USING filtre les lignes qu'on voit, modifie ou supprime ; WITH CHECK filtre celles qu'on écrit. jwt_sub() lit le claim « sub » du jeton dans request.jwt.claims ; chez Supabase, la même fonction s'appelle auth.uid(). La politique lire_tout, dans rls.sql, laisse tout le monde lire. Si on demande les pièges : RLS activée sans politique, plus personne ne voit rien ; le propriétaire de la table et les superutilisateurs passent outre ; une vue s'exécute avec les droits de son créateur ; un using (true) partout, c'est une RLS décorative.</aside>
 </section>
 
 <section class="slide" aria-label="Quand l'IA oublie les droits">
@@ -631,11 +653,11 @@ grant select, insert on api.apero
     <ul class="list" style="margin-top: 10px">
       <li>Le backend de ces applis : Supabase, donc PostgREST.</li>
       <li>La clé <code>anon</code> est publique par conception : ce n'était pas elle, le problème.</li>
-      <li>Il manquait les règles de la slide précédente : les droits et la Row Level Security.</li>
+      <li>Il leur manquait exactement les deux slides précédentes.</li>
     </ul>
   </div>
   <p class="at-bottom lead" style="max-width: none">L'IA vous génère l'API en cinq minutes. <mark>Les droits, c'est encore vous.</mark></p>
-  <aside class="notes">Analyse de Matt Palmer (Replit), mars 2025, publiée comme CVE-2025-48757 le 29 mai 2025. Rejouer la requête 6 (le DELETE refusé, 403) et dire : « voilà la ligne qui manquait à 170 applis ».</aside>
+  <aside class="notes">Analyse de Matt Palmer (Replit), mars 2025, publiée comme CVE-2025-48757 le 29 mai 2025. Rejouer la requête 8 (Alice ne peut pas supprimer le pastis de Bob) et dire : « voilà la politique qui manquait à 170 applis ».</aside>
 </section>
 
 <section class="slide" aria-label="Le débat">
@@ -672,7 +694,7 @@ grant select, insert on api.apero
   <h2>À retenir</h2>
   <ul class="list lead">
     <li>Une API sans backend, c'est possible.</li>
-    <li>La sécurité se règle dans la base, avec les rôles Postgres.</li>
+    <li>La sécurité se règle dans la base : les rôles Postgres, puis la Row Level Security.</li>
     <li>Idéal pour démarrer, à challenger pour du métier complexe.</li>
   </ul>
 </section>

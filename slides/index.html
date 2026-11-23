@@ -395,9 +395,9 @@ aside.notes { display: none; }
     <span class="indent">?secret=<mark>APEROTECHAPEROTECHAPEROTECHAPERO</mark></span>
     <span class="indent">&amp;issuer=Apero</span>
   </div>
-  <p class="lead" style="margin-top: 48px">C'est tout ce qui est échangé, une seule fois. Le secret est encodé en base32.</p>
-  <p class="lead"><strong>Quelqu'un qui photographie ce QR code possède votre double authentification.</strong></p>
-  <aside class="notes">Ce secret est justement celui qui calcule le code de la première slide. Rappeler qu'il ne faut jamais partager un QR d'enrôlement en capture d'écran.</aside>
+  <p class="lead" style="margin-top: 40px">C'est tout ce qui est échangé, une seule fois. <strong>Quelqu'un qui photographie ce QR code possède votre double authentification.</strong></p>
+  <p class="at-bottom small"><strong>Et avec une IA&nbsp;?</strong> Demandez-lui la 2FA sur un projet Supabase : elle passera par <code>supabase.auth.mfa.enroll()</code>, qui renvoie exactement ce genre d'URI.</p>
+  <aside class="notes">Le lien avec l'IA : Supabase, le backend des applis générées par des outils comme Lovable, propose la 2FA TOTP par défaut. L'IA génère la 2FA ; ce soir, on regarde ce qu'il y a dedans. Le secret est encodé en base32. Ce secret est justement celui qui calcule le code de la première slide. Rappeler qu'il ne faut jamais partager un QR d'enrôlement en capture d'écran.</aside>
 </section>
 
 <section class="slide" aria-label="Le code Java">
@@ -463,9 +463,9 @@ totp(key, Instant.now().getEpochSecond() / 30);           // tranche de 30 s</pr
   </div>
   <div class="cols">
     <div class="panel"><div class="stat">62&nbsp;<small>%</small></div><p class="small" style="margin:0 0 10px"><strong>Industrialisé.</strong> La part du phishing bloqué par Microsoft due au kit Tycoon 2FA, à son pic.</p><p class="source" style="margin:0">Démantelé par Europol et Microsoft en mars 2026</p></div>
-    <div class="panel"><div class="stat">54&nbsp;<small>%</small></div><p class="small" style="margin:0 0 10px"><strong>Écrit par une IA.</strong> De clics sur des mails de phishing générés par IA : autant que des experts, contre 12&nbsp;% pour un mail générique.</p><p class="source" style="margin:0">Heiding, Schneier et al., 101 participants</p></div>
+    <div class="panel"><div class="stat">30&nbsp;<small>s</small></div><p class="small" style="margin:0 0 10px"><strong>Largement assez.</strong> Le kit relaie le code tout de suite, puis garde le cookie de session.</p><p class="source" style="margin:0">Le code expire, la session reste ouverte</p></div>
   </div>
-  <aside class="notes">Pour tout le monde. Le code à 6 chiffres ne protège pas d'un faux site qui le relaie en direct : des kits le font clés en main, et l'IA écrit l'appât. Phrase à dire : « L'OTP arrête les mots de passe volés en masse, pas un faux site qui relaie votre code en direct. » Transition : c'est pour ça qu'on monte l'échelle.</aside>
+  <aside class="notes">Pour tout le monde. Le code à 6 chiffres ne protège pas d'un faux site qui le relaie en direct : des kits le font clés en main, et gardent ensuite la session. Phrase à dire : « L'OTP arrête les mots de passe volés en masse, pas un faux site qui relaie votre code en direct. » Transition : c'est pour ça qu'on monte l'échelle.</aside>
 </section>
 
 <section class="slide" aria-label="Limites">

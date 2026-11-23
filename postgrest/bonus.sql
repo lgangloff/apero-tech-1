@@ -9,8 +9,8 @@ create table api.participant (
 );
 
 insert into api.participant (prenom, apero_id) values
-  ('Alice', 1),
-  ('Bob',   2),
+  ('Bob',   1),   -- le pastis de Bob, comme dans la démo de la Row Level Security
+  ('Alice', 2),
   ('Chloé', 3);
 
 grant select on api.participant to anon, membre;

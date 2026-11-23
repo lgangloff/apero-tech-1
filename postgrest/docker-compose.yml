@@ -1,5 +1,5 @@
 # Démo PostgREST : une base Postgres + le serveur PostgREST devant elle.
-#   docker compose up
+#   docker compose up -d
 # L'API répond ensuite sur http://localhost:3000
 
 services:
@@ -18,7 +18,7 @@ services:
       - "5432:5432"
 
   api:
-    image: postgrest/postgrest
+    image: postgrest/postgrest:v16.6   # version testée avec la démo
     environment:
       PGRST_DB_URI: postgres://authenticator:mdp_demo@db:5432/postgres
       PGRST_DB_SCHEMAS: api          # seul ce schéma est exposé

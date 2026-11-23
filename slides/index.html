@@ -564,7 +564,7 @@ POST /apero</pre>
 <section class="slide" aria-label="Démo PostgREST">
   <h2>Démo&nbsp;: une API pour l'apéro</h2>
   <ol class="steps">
-    <li><code>docker compose up</code><span class="small quiet">Postgres et PostgREST démarrent, avec 4 lignes de configuration</span></li>
+    <li><code>docker compose up -d</code><span class="small quiet">Postgres et PostgREST démarrent, avec 4 lignes de configuration</span></li>
     <li><code>docker compose exec db psql -U postgres -f /demo/apero.sql</code><span class="small quiet">La table est créée en direct : pastis, chips, bière</span></li>
     <li><code>apero.http</code> dans VS Code, requêtes 1 à 3<span class="small quiet">Lire, filtrer, trier : aucune ligne de backend écrite</span></li>
     <li>Requête 4 : ajouter des olives sans jeton<span class="small quiet">Refusé. Bonne nouvelle : tout le monde ne peut pas ajouter des olives.</span></li>
@@ -617,7 +617,7 @@ grant select, insert on api.apero
     </table>
   </div>
   <p class="at-bottom">Requêtes 5 et 6 de <code>apero.http</code> : avec le jeton, les olives arrivent, mais le pastis reste.</p>
-  <aside class="notes">Rejouer la requête 5 avec le jeton : 201. Puis la 6 : même un membre ne peut pas supprimer le pastis. Puis la Row Level Security, slide suivante. Le bonus (bonus.sql et la requête 11, la jointure déduite de la clé étrangère) se saute si le temps manque.</aside>
+  <aside class="notes">Rejouer la requête 5 avec le jeton : 201. Puis la 6 : même un membre ne peut pas supprimer le pastis. Puis la Row Level Security, slide suivante. Le bonus (bonus.sql et la requête 11, la jointure déduite de la clé étrangère) est sauté par défaut : à garder pour les questions de fin, s'il reste du temps.</aside>
 </section>
 
 <section class="slide" aria-label="Les droits, ligne par ligne">
@@ -647,8 +647,8 @@ create policy mes_apports
   <div class="cols wide-right">
     <div>
       <div class="stat">170 <small>applis</small></div>
-      <p style="margin-top: 18px">sur 1&nbsp;645 générées par Lovable, lisibles ou modifiables <strong>sans être connecté</strong>.</p>
-      <p class="small quiet" style="margin:0">E-mails, téléphones, paiements, clés d'API : 303 endpoints exposés.</p>
+      <p style="margin-top: 18px">sur 1&nbsp;645 de la vitrine de Lovable, soit 10&nbsp;%, dont la base se lisait <strong>sans être connecté</strong>.</p>
+      <p class="small quiet" style="margin:0">Noms, téléphones, paiements, clés d'API : 303 endpoints exposés, rien qu'en visitant les pages d'accueil.</p>
     </div>
     <ul class="list" style="margin-top: 10px">
       <li>Le backend de ces applis : Supabase, donc PostgREST.</li>
@@ -657,7 +657,7 @@ create policy mes_apports
     </ul>
   </div>
   <p class="at-bottom lead" style="max-width: none">L'IA vous génère l'API en cinq minutes. <mark>Les droits, c'est encore vous.</mark></p>
-  <aside class="notes">Analyse de Matt Palmer (Replit), mars 2025, publiée comme CVE-2025-48757 le 29 mai 2025. Rejouer la requête 8 (Alice ne peut pas supprimer le pastis de Bob) et dire : « voilà la politique qui manquait à 170 applis ».</aside>
+  <aside class="notes">Analyse de Matt Palmer (Replit) : scan automatique du 21 mars 2025 sur la vitrine Lovable Launched, en lecture seule et sur les seules pages d'accueil, donc un minimum. Sur une des applis, Linkable, il a aussi pu écrire : une ligne insérée avec payment_status à « paid », sans passer par Stripe. Faille publiée comme CVE-2025-48757 le 29 mai 2025. Lovable a ensuite ajouté un scanner, mais il vérifie seulement qu'une politique existe, pas qu'elle est juste. Rejouer la requête 8 (Alice ne peut pas supprimer le pastis de Bob) et dire : « voilà la politique qui manquait à 170 applis ».</aside>
 </section>
 
 <section class="slide" aria-label="Le débat">

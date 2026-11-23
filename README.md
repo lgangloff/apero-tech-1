@@ -74,9 +74,11 @@ Les jetons du rôle `membre`, d'Alice et de Bob sont déjà dans `apero.http`. S
 
 Pour rejouer la démo depuis le début : `docker compose down -v`, puis les deux commandes ci-dessus.
 
+Si l'API ne trouve pas la base (`could not translate host name "db"` dans `docker compose logs api`), c'est que son conteneur pointe encore vers un ancien réseau Docker, par exemple après un redémarrage de Docker Desktop : `docker compose up -d --force-recreate` le recrée sans toucher aux données.
+
 | Fichier | Rôle |
 | --- | --- |
-| `docker-compose.yml` | Postgres 17 et PostgREST, avec 4 lignes de configuration |
+| `docker-compose.yml` | Postgres 17 et PostgREST 16.6, avec 4 lignes de configuration |
 | `init.sql` | Le schéma `api` et les rôles `anon`, `membre` et `authenticator` |
 | `apero.sql` | La table créée en direct, et ses `GRANT` |
 | `rls.sql` | La Row Level Security : chacun ne modifie que ses propres apports |
